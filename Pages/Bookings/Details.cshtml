@@ -1,0 +1,55 @@
+@page
+@model Hotel.Pages.Bookings.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Booking</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Booking.CheckInDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Booking.CheckInDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Booking.CheckOutDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Booking.CheckOutDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Booking.State)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Booking.State)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Booking.Reason)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Booking.Reason)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Booking.Guest)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Booking.Guest.FullName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Booking.Room)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Booking.Room.DisplayName)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.Booking?.Id">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>

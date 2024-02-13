@@ -1,0 +1,61 @@
+@page "/"
+@model Hotel.Pages.Rooms.IndexModel
+
+@{
+    ViewData["Title"] = "Rooms";
+}
+
+<h1>Rooms</h1>
+
+@if (User.IsInRole("Employee"))
+{
+    <p><a asp-page="Create">Create New</a></p>
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Room[0].Number)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Room[0].Type)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Room[0].Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Room[0].IsAvailable)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Room) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Number)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Type)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsAvailable)
+            </td>
+            <td>
+                @if (User.IsInRole("Employee"))
+                {
+                    <div>
+                        <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a> |
+                    </div>
+                }
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-page="/Bookings/Create" asp-route-id="@item.Id">Book</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

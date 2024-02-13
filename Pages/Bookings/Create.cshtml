@@ -1,0 +1,63 @@
+@page
+@model Hotel.Pages.Bookings.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Booking</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Booking.GuestId" class="control-label"></label>
+                <select asp-for="Booking.GuestId" class ="form-control" asp-items="ViewBag.GuestId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Booking.RoomId" class="control-label"></label>
+                <select asp-for="Booking.RoomId" class ="form-control" asp-items="ViewBag.RoomId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Booking.CheckInDate" class="control-label"></label>
+                <input asp-for="Booking.CheckInDate" class="form-control" />
+                <span asp-validation-for="Booking.CheckInDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Booking.CheckOutDate" class="control-label"></label>
+                <input asp-for="Booking.CheckOutDate" class="form-control" />
+                <span asp-validation-for="Booking.CheckOutDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Booking.State" class="control-label"></label>
+                <select asp-for="Booking.State" class="form-control">
+                    <option value="Pending">Pending</option>
+                    <option value="Confirmed">Confirmed</option>
+                    <option value="Declined">Declined</option>
+                    <option value="Canceled">Canceled</option>
+                </select>
+                <span asp-validation-for="Booking.State" class="text-danger"></span>
+            </div>
+                    
+            @if (User.IsInRole("Employee"))
+            {
+                <div class="form-group">
+                    <label asp-for="Booking.Reason" class="control-label"></label>
+                    <input asp-for="Booking.Reason" class="form-control" />
+                    <span asp-validation-for="Booking.Reason" class="text-danger"></span>
+                </div>
+            }
+            <div class="form-group mt-3">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
