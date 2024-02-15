@@ -35,4 +35,8 @@
       <Compile Remove="Pages\Index.cshtml.cs" />
     </ItemGroup>
 
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Areas\Identity\Pages\Roles\Index.cshtml" />
+    </ItemGroup>
+
 </Project>

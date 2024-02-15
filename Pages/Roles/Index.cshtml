@@ -1,0 +1,91 @@
+@page
+@model Hotel.Pages.Roles.RolesModel
+
+@{
+    ViewData["Title"] = "Roles";
+}
+
+<h1>Roles</h1>
+
+<div class="row">
+    <div class="col-md-4 mb-3">
+        
+        <form method="post" asp-page-handler="CreateRole">
+            <div class="row">
+                <div class="col-md-6">
+                    <input name="roleName" class="form-control" placeholder="Role name"/>
+                </div>
+                <div class="col-md-6">
+                    <button type="submit" class="btn btn-outline-primary">Create Role</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@if (Model.Users != null && Model.Users.Count > 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>User</th>
+                <th>Roles</th>
+                <th>Assign Role</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model.Users)
+            {
+                <tr>
+                    <td>@user.UserName</td>
+                    <td>
+                        @if (user.Roles != null && user.Roles.Any())
+                        {
+                            <ul class="list-unstyled">
+                                @foreach (var role in user.Roles)
+                                {
+                                    <li>
+                                        <div class="row">
+                                            <span class="col mt-2">
+                                                @role
+                                            </span>
+                                            <span class="col">
+                                                <form method="post" asp-page-handler="RemoveRole" asp-route-userId="@user.UserId" asp-route-roleName="@role">
+                                                    <button type="submit" class="btn btn-link text-danger">X</button>
+                                                </form>
+                                            </span>
+                                        </div>
+                                    </li>
+                                }
+                            </ul>
+                        }
+                    </td>
+                    <td>
+                        <form method="post" asp-page-handler="AssignRole" asp-route-userId="@user.UserId">
+                            <div class="row">
+                                <span class="col">
+                                    <select name="roleId" class="form-control">
+                                        @foreach (var role in Model.Roles)
+                                        {
+                                            @if(user.Roles != null && user.Roles.All(r => r != role.Name))
+                                            {
+                                                <option value="@role.Id">@role.Name</option>
+                                            }
+                                        }
+                                    </select>
+                                </span>
+                                <span class="col">
+                                    <button type="submit" class="btn btn-link">Assign</button>
+                                </span>
+                            </div>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No users found.</p>
+}

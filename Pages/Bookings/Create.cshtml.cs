@@ -21,7 +21,7 @@ namespace Hotel.Pages.Bookings
 
         public IActionResult OnGet()
         {
-            ViewData["GuestId"] = new SelectList(_context.Users, "Id", "FullName");
+            ViewData["GuestId"] = new SelectList(_context.Users, "Id", "Email");
             ViewData["RoomId"] = new SelectList(_context.Room.Where(room => room.IsAvailable).ToList(), "Id", "DisplayName");
             return Page();
         }
@@ -30,7 +30,6 @@ namespace Hotel.Pages.Bookings
         public Booking Booking { get; set; } = default!;
         
 
-        // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
           if (!ModelState.IsValid || _context.Booking == null || Booking == null)
@@ -42,7 +41,7 @@ namespace Hotel.Pages.Bookings
                         Console.Write(error.ErrorMessage);
                     }
                 }
-                ViewData["GuestId"] = new SelectList(_context.Users, "Id", "FullName");
+                ViewData["GuestId"] = new SelectList(_context.Users, "Id", "Email");
                 ViewData["RoomId"] = new SelectList(_context.Room.Where(room => room.IsAvailable).ToList(), "Id", "DisplayName");
                 return Page();
             }

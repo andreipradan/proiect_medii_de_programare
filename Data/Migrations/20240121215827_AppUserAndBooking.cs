@@ -80,14 +80,6 @@ namespace Hotel.Data.Migrations
             migrationBuilder.DropColumn(
                 name: "Discriminator",
                 table: "AspNetUsers");
-
-            migrationBuilder.DropColumn(
-                name: "FirstName",
-                table: "AspNetUsers");
-
-            migrationBuilder.DropColumn(
-                name: "LastName",
-                table: "AspNetUsers");
         }
     }
 }

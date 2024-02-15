@@ -1,5 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Identity;
+
 namespace Hotel.Models;
 
 public enum BookingState
@@ -14,9 +16,10 @@ public class Booking
 {
     public int Id { get; set; }
 
-    [ForeignKey("ApplicationUser")]
+    [ForeignKey("IdentityUser")]
     public string GuestId { get; set; }
 
+    [ForeignKey("Room")]
     public int RoomId { get; set; }
 
 
@@ -27,6 +30,6 @@ public class Booking
     public BookingState State { get; set; }
     public string? Reason { get; set; }
 
-    public ApplicationUser? Guest { get; set; }
+    public IdentityUser? Guest { get; set; }
     public Room? Room { get; set; }
 }
