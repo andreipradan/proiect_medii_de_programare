@@ -33,6 +33,9 @@
 
     <ItemGroup>
       <Compile Remove="Pages\Index.cshtml.cs" />
+      <Compile Remove="Data\Migrations\20240215151837_removeRoomNumber.cs" />
+      <Compile Remove="Data\Migrations\20240215160922_InitialCreate.Designer.cs" />
+      <Compile Remove="Data\Migrations\20240215160922_InitialCreate.cs" />
     </ItemGroup>
 
     <ItemGroup>

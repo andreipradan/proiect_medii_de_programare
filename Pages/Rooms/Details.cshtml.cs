@@ -33,10 +33,8 @@ namespace Hotel.Pages.Rooms
             {
                 return NotFound();
             }
-            else 
-            {
-                Room = room;
-            }
+
+            Room = room;
             return Page();
         }
     }

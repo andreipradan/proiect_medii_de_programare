@@ -7,7 +7,7 @@
 
 <h1>Rooms</h1>
 
-@if (User.IsInRole("Employee"))
+@if (User.IsInRole("Admin"))
 {
     <p><a asp-page="Create">Create New</a></p>
 }
@@ -15,47 +15,65 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Room[0].Number)
+                @Html.DisplayNameFor(model => model.Rooms[0].Id)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Room[0].Type)
+                @Html.DisplayNameFor(model => model.Rooms[0].Type)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Room[0].Price)
+                @Html.DisplayNameFor(model => model.Rooms[0].Price)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Room[0].IsAvailable)
+                @Html.DisplayNameFor(model => model.Rooms[0].Facilities)
             </th>
-            <th></th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Room) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Number)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Type)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsAvailable)
-            </td>
-            <td>
-                @if (User.IsInRole("Employee"))
-                {
-                    <div>
-                        <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                        <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a> |
-                    </div>
-                }
-                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-page="/Bookings/Create" asp-route-id="@item.Id">Book</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.Rooms) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Type)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @if (item.Facilities != null)
+                    {
+                        @item.Facilities.Count
+                        if (item.Facilities != null && item.Facilities.Any())
+                        {
+                            <ul class="list-unstyled">
+                                @foreach (var facility in item.Facilities)
+                                {
+                                    <li>@facility</li>
+                                }
+                            </ul>
+                        }
+                    }
+                    else
+                    {
+                        <span>No facilities</span>
+                    }
+
+
+                </td>
+                <td>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <div>
+                            <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                            <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a> |
+                        </div>
+                    }
+                    <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-page="/Bookings/Create" asp-route-id="@item.Id">Book</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
