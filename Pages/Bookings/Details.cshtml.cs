@@ -1,20 +1,16 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Hotel.Data;
+using Hotel.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using Hotel.Data;
-using Hotel.Models;
 
 namespace Hotel.Pages.Bookings
 {
     public class DetailsModel : PageModel
     {
-        private readonly Hotel.Data.ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public DetailsModel(Hotel.Data.ApplicationDbContext context)
+        public DetailsModel(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -36,10 +32,8 @@ namespace Hotel.Pages.Bookings
             {
                 return NotFound();
             }
-            else 
-            {
-                Booking = booking;
-            }
+
+            Booking = booking;
             return Page();
         }
     }

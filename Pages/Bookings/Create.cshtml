@@ -1,22 +1,32 @@
 @page
+@using Hotel.Models
 @model Hotel.Pages.Bookings.CreateModel
 
 @{
     ViewData["Title"] = "Create";
 }
 
-<h4>Book room @if(@Model.RoomIdFromQuery != 0){<span>#@Model.RoomIdFromQuery</span>}
+<h4>Book room @if(Model.RoomIdFromQuery != 0){<span>#@Model.RoomIdFromQuery</span>}
 </h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Booking.GuestId" class="control-label"></label>
-                <select asp-for="Booking.GuestId" class ="form-control" asp-items="ViewBag.GuestId"></select>
-            </div>
-            @if(@Model.RoomIdFromQuery != 0){
+            @if (User.IsInRole("Employee"))
+            {
+                <div class="form-group">
+                    <label asp-for="Booking.GuestId" class="control-label"></label>
+                    <select asp-for="Booking.GuestId" class="form-control" asp-items="ViewBag.GuestId"></select>
+                </div>
+            }
+            else
+            {
+                <div class="form-group">
+                    <input type="hidden" asp-for="Booking.GuestId" value="@Model.GuestIdFromSession"/>
+                </div>
+            }
+            @if(Model.RoomIdFromQuery != 0){
                 <div class="form-group">
                     <input type="hidden" asp-for="Booking.RoomId" value="@Model.RoomIdFromQuery"/>
                 </div>
@@ -38,21 +48,25 @@
                 <input asp-for="Booking.CheckOutDate" value="@DateTime.Today.AddDays(3).ToString("yyyy-MM-dd")" class="form-control" />
                 <span asp-validation-for="Booking.CheckOutDate" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Booking.State" class="control-label"></label>
-                <select asp-for="Booking.State" class="form-control">
-                    <option value="Pending">Pending</option>
-                    <option value="Confirmed">Confirmed</option>
-                    <option value="Declined">Declined</option>
-                    <option value="Canceled">Canceled</option>
-                </select>
-                <span asp-validation-for="Booking.State" class="text-danger"></span>
-            </div>
+            <input type="hidden" asp-for="Booking.State" value="@BookingState.Pending"/>
+            
             <div class="form-group mt-3">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
     </div>
+    @if (Model.Bookings != null && Model.Bookings.Any())
+    {
+        <div class="col-md-4">
+            Existing Bookings for room #@Model.RoomIdFromQuery
+            <ul>
+                @foreach (var booking in Model.Bookings)
+                {
+                    <li>@booking.CheckInDate.ToShortDateString() - @booking.CheckOutDate.ToShortDateString()</li>
+                }
+            </ul>
+        </div>
+    }
 </div>
 
 <div>

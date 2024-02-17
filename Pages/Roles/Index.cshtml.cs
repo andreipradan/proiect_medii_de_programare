@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -5,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Hotel.Pages.Roles
 {
+    [Authorize(Roles = "Admin")]
     public class RolesModel : PageModel
     {
         private readonly RoleManager<IdentityRole> _roleManager;
@@ -48,7 +50,6 @@ namespace Hotel.Pages.Roles
             }
             return Page();
         }
-
 
         public async Task<IActionResult> OnPostAssignRoleAsync(string userId, string roleId)
         {

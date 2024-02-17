@@ -1,6 +1,7 @@
 using Hotel.Data;
 using Hotel.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,10 +21,20 @@ namespace Hotel.Pages.Facilities
 
         public async Task OnGetAsync()
         {
-            if (_context.Facility != null)
+            Facility = await _context.Facility.ToListAsync();
+        }
+        
+        public async Task<IActionResult> OnPostAsync(string name, string description)
+        {
+            if (!ModelState.IsValid)
             {
-                Facility = await _context.Facility.ToListAsync();
+                return Page();
             }
+
+            await _context.Facility.AddAsync(new Facility{Description = description, Name = name});
+            await _context.SaveChangesAsync();
+
+            return RedirectToPage("./Index");
         }
     }
 }

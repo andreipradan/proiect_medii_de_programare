@@ -27,7 +27,8 @@ public class Booking
     public DateTime CheckInDate { get; set; }
     [DataType(DataType.Date)]
     public DateTime CheckOutDate { get; set; }
-    public BookingState State { get; set; }
+
+    public BookingState State { get; set; } = BookingState.Pending;
     public string? Reason { get; set; }
 
     public IdentityUser? Guest { get; set; }

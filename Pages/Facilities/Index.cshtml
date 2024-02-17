@@ -7,9 +7,26 @@
 
 <h1>Index</h1>
 
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
+
+<form method="post">
+    <div class="row">
+        <div class="col-md-3">
+            <input name="name" class="form-control" placeholder="Facility name"/>
+        </div>
+        <div class="col-md-5">
+            <input name="description" class="form-control" placeholder="Facility description"/>
+        </div>
+        <div class="col-md-4">
+            <button type="submit" class="btn btn-outline-primary">Add Facility</button>
+        </div>
+    </div>
+</form>
+<div class="row">
+    <div class="col-md-4 mb-3">
+        
+    </div>
+</div>
+
 <table class="table">
     <thead>
         <tr>
@@ -23,7 +40,7 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Facility) {
+    @foreach (var item in Model.Facility) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
@@ -37,6 +54,6 @@
                 <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
-}
+    }
     </tbody>
 </table>

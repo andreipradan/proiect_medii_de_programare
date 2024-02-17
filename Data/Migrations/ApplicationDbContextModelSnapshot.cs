@@ -17,6 +17,21 @@ namespace Hotel.Data.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.15");
 
+            modelBuilder.Entity("FacilityRoom", b =>
+                {
+                    b.Property<int>("FacilitiesId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("RoomsId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("FacilitiesId", "RoomsId");
+
+                    b.HasIndex("RoomsId");
+
+                    b.ToTable("FacilityRoom");
+                });
+
             modelBuilder.Entity("Hotel.Models.Booking", b =>
                 {
                     b.Property<int>("Id")
@@ -84,27 +99,6 @@ namespace Hotel.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Room");
-                });
-
-            modelBuilder.Entity("Hotel.Models.RoomFacility", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("FacilityId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("RoomId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FacilityId");
-
-                    b.HasIndex("RoomId");
-
-                    b.ToTable("RoomFacility");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -303,6 +297,21 @@ namespace Hotel.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("FacilityRoom", b =>
+                {
+                    b.HasOne("Hotel.Models.Facility", null)
+                        .WithMany()
+                        .HasForeignKey("FacilitiesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Hotel.Models.Room", null)
+                        .WithMany()
+                        .HasForeignKey("RoomsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Hotel.Models.Booking", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Guest")
@@ -318,25 +327,6 @@ namespace Hotel.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Guest");
-
-                    b.Navigation("Room");
-                });
-
-            modelBuilder.Entity("Hotel.Models.RoomFacility", b =>
-                {
-                    b.HasOne("Hotel.Models.Facility", "Facility")
-                        .WithMany()
-                        .HasForeignKey("FacilityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Hotel.Models.Room", "Room")
-                        .WithMany("Facilities")
-                        .HasForeignKey("RoomId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Facility");
 
                     b.Navigation("Room");
                 });
@@ -395,8 +385,6 @@ namespace Hotel.Data.Migrations
             modelBuilder.Entity("Hotel.Models.Room", b =>
                 {
                     b.Navigation("Bookings");
-
-                    b.Navigation("Facilities");
                 });
 #pragma warning restore 612, 618
         }

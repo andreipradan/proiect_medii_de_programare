@@ -1,4 +1,6 @@
 @page
+@using Hotel.Models
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model Hotel.Pages.Bookings.EditModel
 
 @{
@@ -36,13 +38,13 @@
             </div>
             <div class="form-group">
                 <label asp-for="Booking.State" class="control-label"></label>
-                <select asp-for="Booking.State" class="form-control"></select>
+                <select asp-for="Booking.State" class="form-control">
+                    @foreach (var state in Enum.GetValues(typeof(BookingState)))
+                    {
+                        <option value="@state">@state</option>
+                    }
+                    </select>
                 <span asp-validation-for="Booking.State" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Booking.Reason" class="control-label"></label>
-                <input asp-for="Booking.Reason" class="form-control" />
-                <span asp-validation-for="Booking.Reason" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
