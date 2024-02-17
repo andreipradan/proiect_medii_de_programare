@@ -5,9 +5,8 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
-
-<h4>Booking</h4>
+<h4>Book room @if(@Model.RoomIdFromQuery != 0){<span>#@Model.RoomIdFromQuery</span>}
+</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -17,18 +16,26 @@
                 <label asp-for="Booking.GuestId" class="control-label"></label>
                 <select asp-for="Booking.GuestId" class ="form-control" asp-items="ViewBag.GuestId"></select>
             </div>
-            <div class="form-group">
-                <label asp-for="Booking.RoomId" class="control-label"></label>
-                <select asp-for="Booking.RoomId" class ="form-control" asp-items="ViewBag.RoomId"></select>
-            </div>
+            @if(@Model.RoomIdFromQuery != 0){
+                <div class="form-group">
+                    <input type="hidden" asp-for="Booking.RoomId" value="@Model.RoomIdFromQuery"/>
+                </div>
+            }
+            else
+            {
+                <div class="form-group">
+                    <label asp-for="Booking.RoomId" class="control-label"></label>
+                    <select asp-for="Booking.RoomId" class ="form-control" asp-items="ViewBag.RoomId"></select>
+                </div>
+            }
             <div class="form-group">
                 <label asp-for="Booking.CheckInDate" class="control-label"></label>
-                <input asp-for="Booking.CheckInDate" class="form-control" />
+                <input asp-for="Booking.CheckInDate" class="form-control" value="@DateTime.Today.ToString("yyyy-MM-dd")" />
                 <span asp-validation-for="Booking.CheckInDate" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Booking.CheckOutDate" class="control-label"></label>
-                <input asp-for="Booking.CheckOutDate" class="form-control" />
+                <input asp-for="Booking.CheckOutDate" value="@DateTime.Today.AddDays(3).ToString("yyyy-MM-dd")" class="form-control" />
                 <span asp-validation-for="Booking.CheckOutDate" class="text-danger"></span>
             </div>
             <div class="form-group">
