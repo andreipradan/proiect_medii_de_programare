@@ -48,15 +48,6 @@
                 </select>
                 <span asp-validation-for="Booking.State" class="text-danger"></span>
             </div>
-                    
-            @if (User.IsInRole("Employee"))
-            {
-                <div class="form-group">
-                    <label asp-for="Booking.Reason" class="control-label"></label>
-                    <input asp-for="Booking.Reason" class="form-control" />
-                    <span asp-validation-for="Booking.Reason" class="text-danger"></span>
-                </div>
-            }
             <div class="form-group mt-3">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
