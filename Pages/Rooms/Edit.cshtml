@@ -11,7 +11,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form method="post">
+        <form method="post" asp-page-handler="UpdateRoom" >
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Room.Id" />
             <div class="form-group">
@@ -29,9 +29,62 @@
                 <span asp-validation-for="Room.Price" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Save" class="mt-3 btn btn-primary" />
             </div>
         </form>
+    </div>
+    <div class="col-md-4">
+        Room Facilities
+        @if (Model.Room.Facilities != null && Model.Room.Facilities.Any())
+        {
+            @foreach (var facility in Model.Room.Facilities)
+            {
+                <li>
+                    <div class="row">
+                        <span class="col mt-2">
+                            @facility.Name
+                        </span>
+                        <span class="col">
+                            <form method="post" asp-page-handler="RemoveFacility" asp-route-roomId="@Model.Room.Id" asp-route-facilityId="@facility.Id">
+                                <button type="submit" class="btn btn-link text-danger">X</button>
+                            </form>
+                        </span>
+                    </div>
+                </li>
+            }
+        }
+        else
+        {
+            <div>No facilities for this room</div>
+        }
+    </div>
+    <div class="col-md-4">
+        Add Facilities
+        @if (Model.Facilities.Any(facility => !Model.Room.Facilities!.Contains(facility)))
+        {
+            <form method="post" asp-page-handler="AssignFacilities" asp-route-roomId="@Model.Room.Id">
+                <div class="row">
+                    <span class="col">
+                        <select multiple name="facilityIds" class="form-control">
+                            @foreach (var facility in Model.Facilities)
+                            {
+                                @if (Model.Room.Facilities != null && Model.Room.Facilities.All(r => r.Id != facility.Id))
+                                {
+                                    <option value="@facility.Id">@facility.Name</option>
+                                }
+                            }
+                        </select>
+                    </span>
+                    <span class="col">
+                        <button type="submit" class="btn btn-link">Assign</button>
+                    </span>
+                </div>
+            </form>
+        }
+        else
+        {
+            <div>No more available facilities</div>
+        }
     </div>
 </div>
 

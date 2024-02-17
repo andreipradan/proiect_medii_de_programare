@@ -16,14 +16,13 @@ namespace Hotel.Pages.Rooms
             _context = context;
         }
 
-        public IActionResult OnGet()
+        [BindProperty]
+        public Room Room { get; set; } = default!;
+
+        public async Task<IActionResult> OnGetAsync()
         {
             return Page();
         }
-
-        [BindProperty]
-        public Room Room { get; set; } = default!;
-        
 
         public async Task<IActionResult> OnPostAsync()
         {
@@ -41,7 +40,7 @@ namespace Hotel.Pages.Rooms
 
           _context.Room.Add(Room);
           await _context.SaveChangesAsync();
-
+          
           return RedirectToPage("./Index");
         }
     }

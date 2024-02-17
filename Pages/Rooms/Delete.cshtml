@@ -30,6 +30,15 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Room.Price)
         </dd>
+        @if (Model.Room.Facilities != null && Model.Room.Facilities.Any())
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Room.Facilities)
+            </dt>
+            <dd class="col-sm-10">
+                @string.Join(", ", Model.Room.Facilities.Select(r => r.Name))
+            </dd>
+        }
     </dl>
     
     <form method="post">

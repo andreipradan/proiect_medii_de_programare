@@ -44,13 +44,12 @@
                 <td>
                     @if (item.Facilities != null)
                     {
-                        @item.Facilities.Count
                         if (item.Facilities != null && item.Facilities.Any())
                         {
                             <ul class="list-unstyled">
                                 @foreach (var facility in item.Facilities)
                                 {
-                                    <li>@facility</li>
+                                    <li>@facility.Name</li>
                                 }
                             </ul>
                         }

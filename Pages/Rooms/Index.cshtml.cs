@@ -23,7 +23,7 @@ namespace Hotel.Pages.Rooms
             if (_context.Room != null)
             {
                 Rooms = await _context.Room
-                    // .Include(r => r.Facilities)
+                    .Include(r => r.Facilities)
                     .ToListAsync();
             }
         }

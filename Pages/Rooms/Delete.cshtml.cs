@@ -18,7 +18,7 @@ namespace Hotel.Pages.Rooms
         }
 
         [BindProperty]
-      public Room Room { get; set; } = default!;
+        public Room Room { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -27,7 +27,7 @@ namespace Hotel.Pages.Rooms
                 return NotFound();
             }
 
-            var room = await _context.Room.FirstOrDefaultAsync(m => m.Id == id);
+            var room = await _context.Room.Include(r => r.Facilities).FirstOrDefaultAsync(m => m.Id == id);
 
             if (room == null)
             {

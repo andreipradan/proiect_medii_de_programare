@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Packaging;
 
 namespace Hotel.Pages.Rooms
 {
@@ -19,6 +20,8 @@ namespace Hotel.Pages.Rooms
 
         [BindProperty]
         public Room Room { get; set; } = default!;
+        [BindProperty]
+        public List<Facility> Facilities { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -27,37 +30,51 @@ namespace Hotel.Pages.Rooms
                 return NotFound();
             }
 
-            var room =  await _context.Room.FirstOrDefaultAsync(m => m.Id == id);
+            var room =  await _context.Room.Include(r => r.Facilities).FirstOrDefaultAsync(m => m.Id == id);
             if (room == null)
             {
                 return NotFound();
             }
             Room = room;
+            Facilities = await _context.Facility.ToListAsync();
             return Page();
         }
 
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see https://aka.ms/RazorPagesCRUD.
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAssignFacilitiesAsync(int roomId, List<int> facilityIds)
         {
-            if (!ModelState.IsValid)
+            var room = await _context.Room.Include(r => r.Facilities).FirstOrDefaultAsync(m => m.Id == roomId);
+            var facilities = _context.Facility.Where(f => facilityIds.Contains(f.Id));
+            if (room != null && facilities != null)
             {
-                return Page();
-            }
-
-            _context.Attach(Room).State = EntityState.Modified;
-
-            try
-            {
+                room.Facilities?.AddRange(facilities);
                 await _context.SaveChangesAsync();
             }
+            return RedirectToPage("./Edit",new { id = roomId });
+        }
+
+        public async Task<IActionResult> OnPostRemoveFacilityAsync(int roomId, int facilityId)
+        {
+            var room =  await _context.Room.Include(r=>r.Facilities).FirstOrDefaultAsync(m => m.Id == roomId);
+            var facility =  await _context.Facility.FirstOrDefaultAsync(m => m.Id == facilityId);
+            if (room != null && facility != null)
+            {
+                room.Facilities?.Remove(facility);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToPage("./Edit",new { id = roomId });
+        }
+
+        public async Task<IActionResult> OnPostUpdateRoomAsync()
+        {
+            if (!ModelState.IsValid)
+            {return Page();}
+            _context.Attach(Room).State = EntityState.Modified;
+            try
+            {await _context.SaveChangesAsync();}
             catch (DbUpdateConcurrencyException)
             {
                 if (!RoomExists(Room.Id))
-                {
-                    return NotFound();
-                }
-
+                {return NotFound();}
                 throw;
             }
 
